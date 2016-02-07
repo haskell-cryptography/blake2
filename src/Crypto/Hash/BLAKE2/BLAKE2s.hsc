@@ -40,14 +40,14 @@ type BLAKE2sState = ForeignPtr BLAKE2sStruct
 
 -- | Create a new hashing state.
 initialize :: Int
-           -- ^ Output length
+           -- ^ Output length in bytes
            -> BLAKE2sState
 initialize = initializer c_blake2s_init
 {-# INLINE initialize #-}
 
 -- | Create a new keyed hashing state.
 initialize' :: Int
-            -- ^ Output length
+            -- ^ Output length in bytes
             -> ByteString
             -- ^ Key
             -> BLAKE2sState
@@ -65,7 +65,7 @@ update = updater c_blake2s_update
 
 -- | Finalize the hashing state.
 finalize :: Int
-         -- ^ Output length
+         -- ^ Output length in bytes
          -> BLAKE2sState
          -- ^ Hashing state
          -> ByteString
@@ -74,7 +74,7 @@ finalize = finalizer c_blake2s_final
 
 -- | Perform hashing all in one step.
 hash :: Int
-     -- ^ Output length
+     -- ^ Output length in bytes
      -> ByteString
      -- ^ Key
      -> ByteString
