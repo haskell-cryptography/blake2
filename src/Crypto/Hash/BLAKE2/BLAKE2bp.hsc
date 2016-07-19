@@ -72,7 +72,9 @@ finalize :: Int
 finalize = finalizer c_blake2bp_final
 {-# INLINE finalize #-}
 
--- | Perform hashing all in one step.
+-- | Perform hashing all in one step. A common way of calling this function
+--   is @hash 64 mempty dataToHash@ for applications which do not require
+--   keying.
 hash :: Int
      -- ^ Output length in bytes
      -> ByteString
