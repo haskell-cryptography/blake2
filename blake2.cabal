@@ -19,20 +19,8 @@ extra-source-files:
   README.md
   changelog.md
   LICENSE
-  cbits/blake2s.c
-  cbits/blake2bp.c
-  cbits/blake2sp.c
-  cbits/blake2b.c
-  include/blake2.h
-  include/blake2s-round.h
-  include/blake2b-round.h
-  include/blake2b-load-sse41.h
-  include/blake2s-load-sse2.h
-  include/blake2b-load-sse2.h
-  include/blake2s-load-sse41.h
-  include/blake2-impl.h
-  include/blake2-config.h
-  include/blake2s-load-xop.h
+  include/ref/*.h
+  include/sse/*.h
 
 source-repository head
   type: git
@@ -46,6 +34,11 @@ flag hlint
 flag doctest
 
 flag llvm
+  default: False
+  manual: True
+
+flag support_blake2_sse
+  description: Use SSE optimized version of BLAKE2
   default: False
   manual: True
 
@@ -64,14 +57,23 @@ library
     Crypto.Hash.BLAKE2.BLAKE2s
     Crypto.Hash.BLAKE2.BLAKE2sp
     Crypto.Hash.BLAKE2.Internal
-  ghc-options:      -rtsopts -with-rtsopts=-N -Wall -fwarn-tabs
+  ghc-options:      -Wall -fwarn-tabs
   cc-options:       -std=c99
-  include-dirs:     include
-  c-sources:
-    cbits/blake2b.c
-    cbits/blake2bp.c
-    cbits/blake2s.c
-    cbits/blake2sp.c
+
+  if arch(x86_64) || flag(support_blake2_sse)
+    c-sources:
+      cbits/sse/blake2b.c
+      cbits/sse/blake2bp.c
+      cbits/sse/blake2s.c
+      cbits/sse/blake2sp.c
+    include-dirs: include/sse
+  else
+    c-sources:
+      cbits/ref/blake2b.c
+      cbits/ref/blake2bp.c
+      cbits/ref/blake2s.c
+      cbits/ref/blake2sp.c
+    include-dirs: include/ref
 
   if flag(llvm)
     ghc-options: -fllvm

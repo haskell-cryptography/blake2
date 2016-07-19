@@ -1,14 +1,16 @@
 /*
-   BLAKE2 reference source code package - optimized C implementations
-
-   Written in 2012 by Samuel Neves <sneves@dei.uc.pt>
-
-   To the extent possible under law, the author(s) have dedicated all copyright
-   and related and neighboring rights to this software to the public domain
-   worldwide. This software is distributed without any warranty.
-
-   You should have received a copy of the CC0 Public Domain Dedication along with
-   this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+   BLAKE2 reference source code package - reference C implementations
+  
+   Copyright 2012, Samuel Neves <sneves@dei.uc.pt>.  You may use this under the
+   terms of the CC0, the OpenSSL Licence, or the Apache Public License 2.0, at
+   your option.  The terms of these licenses can be found at:
+  
+   - CC0 1.0 Universal : http://creativecommons.org/publicdomain/zero/1.0
+   - OpenSSL license   : https://www.openssl.org/source/license.html
+   - Apache 2.0        : http://www.apache.org/licenses/LICENSE-2.0
+  
+   More information about the BLAKE2 hash function can be found at
+   https://blake2.net.
 */
 
 #include <stdio.h>
@@ -25,15 +27,15 @@
 
 #define PARALLELISM_DEGREE 4
 
-static inline int blake2bp_init_leaf( blake2b_state *S, uint8_t outlen, uint8_t keylen, uint64_t offset )
+BLAKE2_LOCAL_INLINE(int) blake2bp_init_leaf( blake2b_state *S, uint8_t outlen, uint8_t keylen, uint64_t offset )
 {
   blake2b_param P[1];
   P->digest_length = outlen;
   P->key_length = keylen;
   P->fanout = PARALLELISM_DEGREE;
   P->depth = 2;
-  P->leaf_length = 0;
-  P->node_offset = offset;
+  store32( &P->leaf_length, 0 );
+  store64( &P->node_offset, offset );
   P->node_depth = 0;
   P->inner_length = BLAKE2B_OUTBYTES;
   memset( P->reserved, 0, sizeof( P->reserved ) );
@@ -42,15 +44,15 @@ static inline int blake2bp_init_leaf( blake2b_state *S, uint8_t outlen, uint8_t 
   return blake2b_init_param( S, P );
 }
 
-static inline int blake2bp_init_root( blake2b_state *S, uint8_t outlen, uint8_t keylen )
+BLAKE2_LOCAL_INLINE(int) blake2bp_init_root( blake2b_state *S, uint8_t outlen, uint8_t keylen )
 {
   blake2b_param P[1];
   P->digest_length = outlen;
   P->key_length = keylen;
   P->fanout = PARALLELISM_DEGREE;
   P->depth = 2;
-  P->leaf_length = 0;
-  P->node_offset = 0;
+  store32( &P->leaf_length, 0 );
+  store64( &P->node_offset, 0 );
   P->node_depth = 1;
   P->inner_length = BLAKE2B_OUTBYTES;
   memset( P->reserved, 0, sizeof( P->reserved ) );
@@ -158,8 +160,6 @@ int blake2bp_update( blake2bp_state *S, const uint8_t *in, uint64_t inlen )
   return 0;
 }
 
-
-
 int blake2bp_final( blake2bp_state *S, uint8_t *out, const uint8_t outlen )
 {
   uint8_t hash[PARALLELISM_DEGREE][BLAKE2B_OUTBYTES];
@@ -181,6 +181,7 @@ int blake2bp_final( blake2bp_state *S, uint8_t *out, const uint8_t outlen )
   for( size_t i = 0; i < PARALLELISM_DEGREE; ++i )
     blake2b_update( S->R, hash[i], BLAKE2B_OUTBYTES );
 
+  
   return blake2b_final( S->R, out, outlen );
 }
 
@@ -204,7 +205,7 @@ int blake2bp( uint8_t *out, const void *in, const void *key, uint8_t outlen, uin
   for( size_t i = 0; i < PARALLELISM_DEGREE; ++i )
     if( blake2bp_init_leaf( S[i], outlen, keylen, i ) < 0 ) return -1;
 
-  S[PARALLELISM_DEGREE - 1]->last_node = 1; // mark last node
+  S[PARALLELISM_DEGREE - 1]->last_node = 1; /* mark last node */
 
   if( keylen > 0 )
   {
@@ -252,14 +253,13 @@ int blake2bp( uint8_t *out, const void *in, const void *key, uint8_t outlen, uin
   if( blake2bp_init_root( FS, outlen, keylen ) < 0 )
     return -1;
 
-  FS->last_node = 1; // Mark as last node
+  FS->last_node = 1; /* Mark as last node */
 
   for( size_t i = 0; i < PARALLELISM_DEGREE; ++i )
     blake2b_update( FS, hash[i], BLAKE2B_OUTBYTES );
 
-  return blake2b_final( FS, out, outlen );
+  return blake2b_final( FS, out, outlen );;
 }
-
 
 #if defined(BLAKE2BP_SELFTEST)
 #include <string.h>
@@ -278,11 +278,7 @@ int main( int argc, char **argv )
   for( size_t i = 0; i < KAT_LENGTH; ++i )
   {
     uint8_t hash[BLAKE2B_OUTBYTES];
-    //blake2bp( hash, buf, key, BLAKE2B_OUTBYTES, i, BLAKE2B_KEYBYTES );
-    blake2bp_state S[1];
-    blake2bp_init_key( S, BLAKE2B_OUTBYTES, key, BLAKE2B_KEYBYTES );
-    blake2bp_update( S, buf, i );
-    blake2bp_final( S, hash, BLAKE2B_OUTBYTES );
+    blake2bp( hash, buf, key, BLAKE2B_OUTBYTES, i, BLAKE2B_KEYBYTES );
 
     if( 0 != memcmp( hash, blake2bp_keyed_kat[i], BLAKE2B_OUTBYTES ) )
     {
@@ -295,4 +291,3 @@ int main( int argc, char **argv )
   return 0;
 }
 #endif
-
