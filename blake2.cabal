@@ -10,7 +10,7 @@ bug-reports:   https://github.com/centromere/blake2/issues
 category:      Cryptography
 build-type:    Simple
 cabal-version: >=1.10
-tested-with:   GHC == 7.10.1, GHC == 7.10.2, GHC == 7.10.3
+tested-with:   GHC == 7.10.3, GHC == 8.0.2
 description:
   This library provides the <https://blake2.net/ BLAKE2> hash algorithms.
 
