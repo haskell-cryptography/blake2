@@ -17,7 +17,7 @@ module Crypto.Hash.BLAKE2.BLAKE2b
   ) where
 
 import Data.ByteString    (ByteString)
-import Foreign.C.Types    (CInt(..))
+import Foreign.C.Types    (CInt(..), CSize(..))
 import Foreign.ForeignPtr (ForeignPtr)
 import Foreign.Storable   (Storable(..))
 

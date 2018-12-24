@@ -69,10 +69,10 @@ library
     include-dirs: include/sse
   else
     c-sources:
-      cbits/ref/blake2b.c
-      cbits/ref/blake2bp.c
-      cbits/ref/blake2s.c
-      cbits/ref/blake2sp.c
+      cbits/ref/blake2b-ref.c
+      cbits/ref/blake2bp-ref.c
+      cbits/ref/blake2s-ref.c
+      cbits/ref/blake2sp-ref.c
     include-dirs: include/ref
 
   if flag(llvm)
