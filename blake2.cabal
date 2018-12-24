@@ -1,5 +1,5 @@
 name:          blake2
-version:       0.2.0
+version:       0.3.0
 synopsis:      A library providing BLAKE2
 license:       PublicDomain
 license-file:  LICENSE
