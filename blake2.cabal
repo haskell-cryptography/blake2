@@ -31,8 +31,6 @@ source-repository head
 
 flag hlint
 
-flag doctest
-
 flag llvm
   default: False
   manual: True
