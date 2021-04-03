@@ -1,5 +1,5 @@
 language: c
-dist: trusty
+dist: focal
 
 cache:
   directories:
@@ -12,11 +12,8 @@ addons:
 
 matrix:
   include:
-    - env: ARGS="--resolver lts-12.25"
-      compiler: "stack-8.4.4"
-
     - env: ARGS=""
-      compiler: "stack-8.6.3"
+      compiler: "stack-8.10.4"
 
     - env: ARGS="--resolver nightly"
       compiler: "stack-nightly"
