@@ -1,7 +1,7 @@
 name:          blake2
 version:       0.3.0
 synopsis:      A library providing BLAKE2
-license:       PublicDomain
+license:       Unlicense
 license-file:  LICENSE
 author:        John Galt
 maintainer:    jgalt@centromere.net
