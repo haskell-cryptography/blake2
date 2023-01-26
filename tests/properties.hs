@@ -12,15 +12,22 @@ import qualified Crypto.Hash.BLAKE2.BLAKE2sp as B2sp
 
 import Imports
 
+hexDecode ::
+    ByteString -- ^ Assumed to be valid hexadecimal
+    -> ByteString
+hexDecode x = case Hex.decode x of
+    Left e -> error e
+    Right y -> y
+
 key32 :: ByteString
-key32 = fst . Hex.decode $ "000102030405060708090a0b0c0d0e0f\
-                           \101112131415161718191a1b1c1d1e1f"
+key32 = hexDecode "000102030405060708090a0b0c0d0e0f\
+                  \101112131415161718191a1b1c1d1e1f"
 
 key64 :: ByteString
-key64 = fst . Hex.decode $ "000102030405060708090a0b0c0d0e0f\
-                           \101112131415161718191a1b1c1d1e1f\
-                           \202122232425262728292a2b2c2d2e2f\
-                           \303132333435363738393a3b3c3d3e3f"
+key64 = hexDecode "000102030405060708090a0b0c0d0e0f\
+                  \101112131415161718191a1b1c1d1e1f\
+                  \202122232425262728292a2b2c2d2e2f\
+                  \303132333435363738393a3b3c3d3e3f"
 
 compare :: (ByteString -> ByteString)
         -> ByteString
@@ -28,7 +35,7 @@ compare :: (ByteString -> ByteString)
         -> Property
 compare f input expectation = property $ result === expectation
   where
-    result = Hex.encode . f . fst . Hex.decode $ input
+    result = Hex.encode . f . hexDecode $ input
 
 test0s :: Property
 test0s = compare (B2s.hash 32 key32) "" "48a8997da407876b3d79c0d92325ad3b89cbb754d86ab71aee047ad345fd2c49"
