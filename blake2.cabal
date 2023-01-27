@@ -1,3 +1,5 @@
+cabal-version: 2.2
+
 name:          blake2
 version:       0.3.0
 synopsis:      A library providing BLAKE2
@@ -9,7 +11,6 @@ homepage:      https://github.com/haskell-cryptography/blake2
 bug-reports:   https://github.com/haskell-cryptography/blake2/issues
 category:      Cryptography
 build-type:    Simple
-cabal-version: >=1.10
 tested-with:   GHC == 8.4.4, GHC == 8.6.3
 description:
   This library provides the <https://blake2.net/ BLAKE2> hash algorithms.
