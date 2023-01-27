@@ -1,0 +1,4 @@
+packages: .
+
+constraints:
+    base == 4.17.*
