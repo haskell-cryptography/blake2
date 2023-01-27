@@ -1,7 +1,7 @@
 cabal-version: 2.2
 
 name:          blake2
-version:       0.3.0
+version:       0.3.1
 synopsis:      A library providing BLAKE2
 license:       Unlicense
 license-file:  LICENSE
@@ -11,7 +11,7 @@ homepage:      https://github.com/haskell-cryptography/blake2
 bug-reports:   https://github.com/haskell-cryptography/blake2/issues
 category:      Cryptography
 build-type:    Simple
-tested-with:   GHC == 8.4.4, GHC == 8.6.3
+tested-with:   GHC == 9.2.4
 description:
   This library provides the <https://blake2.net/ BLAKE2> hash algorithms.
 
