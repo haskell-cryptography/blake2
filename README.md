@@ -1,6 +1,12 @@
 # blake2
 
-This library provides the [BLAKE2](https://blake2.net/) hash algorithms. While
-[cryptonite](https://github.com/haskell-crypto/cryptonite) also provides a
-BLAKE2 implementation, this library has fewer dependencies and a richer API for
-features like keyed hashing and variable length output.
+This library provides the [BLAKE2] hash algorithms.
+
+## Comparison with other libraries
+
+This library has fewer dependencies than [cryptonite] and a richer API for
+features like keyed hashing and variable-length output.
+
+  [BLAKE2]: https://blake2.net/
+
+  [cryptonite]: https://github.com/haskell-crypto/cryptonite
