@@ -16,7 +16,6 @@ description:
   This library provides the <https://blake2.net/ BLAKE2> hash algorithms.
 
 extra-source-files:
-  .travis.yml
   README.md
   changelog.md
   LICENSE
