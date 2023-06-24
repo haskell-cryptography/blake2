@@ -10,7 +10,6 @@ maintainer:    jgalt@centromere.net
 homepage:      https://github.com/haskell-cryptography/blake2
 bug-reports:   https://github.com/haskell-cryptography/blake2/issues
 category:      Cryptography
-build-type:    Simple
 tested-with:   GHC == 9.2.4
 description:
   This library provides the <https://blake2.net/ BLAKE2> hash algorithms.
