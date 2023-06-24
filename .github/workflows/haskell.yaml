@@ -10,19 +10,29 @@ permissions:
 
 jobs:
   build:
-    name: GHC ${{ matrix.ghc-version }} on ${{ matrix.os }}
+    name: ghc-${{ matrix.ghc-version }} ${{ matrix.os }} ${{ matrix.llvm && '+' || '-' }}llvm ${{ matrix.support_blake2_sse && '+' || '-' }}support_blake2_sse
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
         ghc-version: ['9.6', '9.4', '9.2', '9.0']
+        llvm: [false]
+        support_blake2_sse: [false]
 
         include:
           - os: windows-latest
             ghc-version: '9.6'
+            llvm: false
+            support_blake2_sse: false
           - os: macos-latest
             ghc-version: '9.6'
+            llvm: false
+            support_blake2_sse: false
+          - os: ubuntu-latest
+            ghc-version: '9.6'
+            llvm: true
+            support_blake2_sse: true
 
     steps:
       - uses: actions/checkout@v3
@@ -38,7 +48,7 @@ jobs:
 
       - name: Configure the build
         run: |
-          cabal configure --enable-tests --enable-benchmarks --disable-documentation
+          cabal configure --enable-tests --enable-benchmarks --disable-documentation --flags "${{ contains(fromJson('["9.4", "9.2", "9.0"]'), matrix.ghc-version) && '+' || '-' }}hlint ${{ matrix.llvm && '+' || '-' }}llvm ${{ matrix.support_blake2_sse && '+' || '-' }}support_blake2_sse"
           cabal build --dry-run
         # The last step generates dist-newstyle/cache/plan.json for the cache key.
 
