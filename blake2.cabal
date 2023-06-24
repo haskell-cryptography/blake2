@@ -16,7 +16,6 @@ description:
 extra-source-files:
   README.md
   changelog.md
-  LICENSE
   include/ref/*.h
   include/sse/*.h
 
