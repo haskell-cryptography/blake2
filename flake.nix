@@ -21,5 +21,9 @@
   in {
     packages.${packageName} = project;
     defaultPackage = self.packages.${system}.${packageName};
+    devShells.default = pkgs.mkShell {
+      inputsFrom = [ project.env ];
+      buildInputs = [ pkgs.haskell-language-server pkgs.cabal-install ];
+    };
   });
 }

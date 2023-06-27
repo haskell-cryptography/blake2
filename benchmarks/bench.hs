@@ -14,10 +14,10 @@ kb :: ByteString
 kb = B.replicate 1024 3
 
 mb :: ByteString
-mb = B.replicate (1024^2) 3
+mb = B.replicate (1024 ^ (2 :: Int)) 3
 
 gb :: ByteString
-gb = B.replicate (1024^3) 3
+gb = B.replicate (1024 ^ (3 :: Int)) 3
 
 main :: IO ()
 main = defaultMain

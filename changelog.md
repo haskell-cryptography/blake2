@@ -1,3 +1,7 @@
+# 0.3.0.1
+
+* Miscellaneous cleanup and dependency version updates
+
 # 0.3.0
 
 * Bring C code up to date
